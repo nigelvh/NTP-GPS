@@ -45,7 +45,7 @@ systemctl restart gpsd
 ```
 ### Verify GPSd is recieving the NMEA data and PPS signal
 Use the utility `gpsmon` and look for NMEA sentences scrolling, as well as marks for the PPS offset every second. You might also use this opportunity to check the number of satellites being tracked.
-![gpsd_screenshot](gpsd_screenshot.jpg =484x717)
+<img src="https://github.com/nigelvh/NTP-GPS/raw/main/Software/gpsd_screenshot.jpg" width="484" height="717">
 ### Configure NTPd
 NTPd will get the coarse time and PPS data via SHMs from GPSd. We'll need to include that in the NTPd configuration. This configuration otherwise is very close to defaults.
 ```bash
