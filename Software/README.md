@@ -1,6 +1,8 @@
 # System Configuration
 Configuration on various systems should look roughly similar, but example steps are provided for the OS's below. We will be using the classic NTPd daemon as the reference, but will also discuss Chrony and NTPsec.
 
+1. [Ubuntu 22.04 LTS](#ubuntu-2204-lts)
+
 ## Ubuntu 22.04 LTS
 ### Disable dhclient from overriding our NTP configuration
 If dhclient is active or has been used on this system, it may override our NTP configuration.
