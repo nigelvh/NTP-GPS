@@ -1,7 +1,8 @@
 # System Configuration
 Configuration on various systems should look roughly similar, but example steps are provided for the OS's below. We will be using the classic NTPd daemon as the reference, but will also discuss Chrony and NTPsec.
 
-1. [Ubuntu 22.04 LTS](#ubuntu-2204-lts)
+- [Ubuntu 22.04 LTS](#ubuntu-2204-lts)
+- [Using Chrony](#using-chrony)
 
 ## Ubuntu 22.04 LTS
 ### Disable dhclient from overriding our NTP configuration
@@ -19,7 +20,7 @@ systemctl disable --now systemd-timesyncd
 ### Install packages
 ```bash
 apt-get update
-apt-get install pps-tools gpsd gpsd-clients ntp
+apt-get install pps-tools gpsd gpsd-clients
 ```
 ### Tweak NTPd AppArmor Profile
 The packaged apparmor profile (at the time of this writing) appears to be missing the openssl abstraction from the AppArmor profile, causing AppArmor deny messages to be found in the syslog. Comparing to the AppArmor profile from Debian and NTPsec, we just have to add one line to resolve it. However, the errors don't immediately appear to prevent NTPd from running.
@@ -51,6 +52,7 @@ Use the utility `gpsmon` and look for NMEA sentences scrolling, as well as marks
 ### Configure NTPd
 NTPd will get the coarse time and PPS data via SHMs from GPSd. We'll need to include that in the NTPd configuration. This configuration otherwise is very close to defaults.
 ```bash
+apt-get install ntp
 curl -o /etc/ntp.conf https://raw.githubusercontent.com/nigelvh/NTP-GPS/main/Software/Files/ntpd.conf
 systemctl enable ntp
 systemctl restart ntp
@@ -74,3 +76,45 @@ test@test:~$ ntpq -c lpeers
 ```
 ### Check that NTPd is reachable
 Use `ntpdate -d <server_ip>` or configure NTPd on another host to use your new server, and verify that it is reachable. You're done!
+
+## Using Chrony
+Setting up the system using Chrony will be very similar to using NTPd. Skip the configuring and verifying NTP steps above, and replace them with configuring and verifying Chrony here.
+
+### Configure Chrony
+Chrony will (like NTPd) get the coarse time and PPS data via SHMs from GPSd. We'll need to include that in the Chrony configuration. This configuration is otherwise very close to defaults.
+```bash
+apt-get install chrony
+curl -o /etc/chrony/chrony.conf https://raw.githubusercontent.com/nigelvh/NTP-GPS/main/Software/Files/chrony.conf
+systemctl enable chrony
+systemctl restart chrony
+```
+### Verify Chrony is tracking PPS
+Query the Chrony daemon to see what peers it is using. Look for the '*' next to the PPS peer.
+```
+test@test:~$ chronyc sources
+MS Name/IP address         Stratum Poll Reach LastRx Last sample               
+===============================================================================
+#x GPS                          15   4   377    13   +247ms[ +247ms] +/-  200ms
+#* PPS                           0   4   377    11    +69ns[ +104ns] +/-  436ns
+^- ntp2.wiktel.com               1   9   377   154  +2514us[+2514us] +/-   21ms
+^- li1150-42.members.linode>     2   9   377   147   +763us[ +763us] +/-   69ms
+^- gosanf.hojmark.net            2   9   377    31  -1058us[-1058us] +/-   46ms
+^- 44.190.40.123                 2   9   377   155   -889us[ -889us] +/-   33ms
+```
+We can also see more details about the server state. Such as that we're tracking the PPS reference, and operating as a Stratum 1, as well as a number of timing related parameters.
+```
+test@test:~$ chronyc tracking
+Reference ID    : 50505300 (PPS)
+Stratum         : 1
+Ref time (UTC)  : Sun Jan 15 04:40:55 2023
+System time     : 0.000000047 seconds slow of NTP time
+Last offset     : -0.000000040 seconds
+RMS offset      : 0.000000484 seconds
+Frequency       : 7.842 ppm slow
+Residual freq   : +0.003 ppm
+Skew            : 0.023 ppm
+Root delay      : 0.000000001 seconds
+Root dispersion : 0.000023089 seconds
+Update interval : 16.0 seconds
+Leap status     : Normal
+```
