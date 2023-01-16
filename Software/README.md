@@ -3,6 +3,7 @@ Configuration on various systems should look roughly similar, but example steps 
 
 - [Ubuntu 22.04 LTS](#ubuntu-2204-lts)
 - [Using Chrony](#using-chrony)
+- [Using NTPsec](#using-ntpsec)
 
 ## Ubuntu 22.04 LTS
 ### Disable dhclient from overriding our NTP configuration
@@ -58,7 +59,7 @@ systemctl enable ntp
 systemctl restart ntp
 ```
 ### Verify NTPd is getting the data
-Query the NTP daemon to see what peers it is using. Look for the '*' next to the SHM(1) PPS peer
+Query the NTP daemon to see what peers it is using. Look for the '*' next to the SHM(1) PPS peer.
 ```
 test@test:~$ ntpq -c lpeers
      remote           refid      st t when poll reach   delay   offset  jitter
@@ -117,4 +118,35 @@ Root delay      : 0.000000001 seconds
 Root dispersion : 0.000023089 seconds
 Update interval : 16.0 seconds
 Leap status     : Normal
+```
+
+## Using NTPsec
+NTPsec configuration will look very similar to the NTPd configuration. Skip the configuring and verifying NTP steps above, and replace them with configuring and verifying NTPsec here.
+
+### Configure NTPsec
+```bash
+apt-get install NTPsec
+rm /etc/dhcp/dhclient-exit-hooks.d/ntpsec 
+rm /run/ntpsec/ntp.conf.dhcp
+curl -o /etc/ntpsec/ntp.conf https://raw.githubusercontent.com/nigelvh/NTP-GPS/main/Software/Files/ntpsec.conf
+systemctl enable ntpsec
+systemctl restart ntpsec
+```
+### Verify NTPsec is tracking PPS
+Query the NTPsec daemon to see what peers it is using. This matches the command syntax as NTPd. Look for the '*' next to the SHM(1) PPS peer.
+```
+test@test:~$ ntpq -c lpeers
+     remote                                   refid      st t when poll reach   delay   offset   jitter
+=======================================================================================================
+*SHM(1)                                  .PPS.            0 l   28   64  377   0.0000  -0.0194   1.2577
+ SHM(0)                                  .GPS.           15 l   27   64  377   0.0000 -243.975   2.8552
+ 0.pool.ntp.org                          .POOL.          16 p    -  256    0   0.0000   0.0000   0.0001
+ 1.pool.ntp.org                          .POOL.          16 p    -  256    0   0.0000   0.0000   0.0001
+-rn5.quickhost.hk                        45.79.13.206     3 u   58   64  377  29.5838   6.9985   1.9140
+-h69.41.139.40.ip.windstream.net         .GPS.            1 u  128   64   16  82.7081   5.4127   1.0102
++208.67.72.50                            17.253.2.123     2 u   63   64  377  76.8092   0.2502   1.1300
+-38.17.55.196                            86.77.84.80      5 u   55   64  177  51.7627   8.4964   5.5212
++c-73-14-129-213.hsd1.co.comcast.net     .PPS.            1 u   55   64  377  42.2095  -0.5344   0.8669
+-108.61.73.244                           128.59.0.245     2 u   58   64  377  60.4326   2.3897   1.4830
+-50-203-248-23-static.hfc.comcastbusines 130.207.244.240  2 u  123   64    6  79.1322  -2.3248   0.1393
 ```
