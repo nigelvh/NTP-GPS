@@ -16,6 +16,20 @@ systemctl disable --now systemd-timesyncd
 apt-get update
 apt-get install pps-tools gpsd gpsd-clients
 ```
+### Configure GPSd
+GPSd will interface with the GPS module to parse the NMEA data for coarse time, and attach to the DCD signal as a PPS source. These data streams will be used to discipline the clock via NTPd's shared memory (SHM) interface.
+```bash
+curl -o /etc/default/gpsd https://raw.githubusercontent.com/nigelvh/NTP-GPS/main/Software/Files/gpsd.conf
+systemctl enable gpsd
+systemctl restart gpsd
+```
+### Verify GPSd is recieving the NMEA data and PPS signal
+Use the utility `gpsmon` and look for NMEA sentences scrolling, as well as marks for the PPS offset every second. You might also use this opportunity to check the number of satellites being tracked.
+<img src="https://github.com/nigelvh/NTP-GPS/raw/main/Software/gpsd_screenshot.jpg" width="484" height="717">
+### Install NTPd
+```bash
+apt-get install ntp
+```
 ### Tweak NTPd AppArmor Profile
 The packaged apparmor profile (at the time of this writing) appears to be missing the openssl abstraction from the AppArmor profile, causing AppArmor deny messages to be found in the syslog. Comparing to the AppArmor profile from Debian and NTPsec, we just have to add one line to resolve it. However, the errors don't immediately appear to prevent NTPd from running.
 ```
@@ -32,20 +46,6 @@ test@test:~$ diff -c ~/usr.sbin.ntpd.orig /etc/apparmor.d/usr.sbin.ntpd
     #include <abstractions/user-tmp>
   
     capability ipc_lock,
-```
-### Configure GPSd
-GPSd will interface with the GPS module to parse the NMEA data for coarse time, and attach to the DCD signal as a PPS source. These data streams will be used to discipline the clock via NTPd's shared memory (SHM) interface.
-```bash
-curl -o /etc/default/gpsd https://raw.githubusercontent.com/nigelvh/NTP-GPS/main/Software/Files/gpsd.conf
-systemctl enable gpsd
-systemctl restart gpsd
-```
-### Verify GPSd is recieving the NMEA data and PPS signal
-Use the utility `gpsmon` and look for NMEA sentences scrolling, as well as marks for the PPS offset every second. You might also use this opportunity to check the number of satellites being tracked.
-<img src="https://github.com/nigelvh/NTP-GPS/raw/main/Software/gpsd_screenshot.jpg" width="484" height="717">
-### Install NTPd
-```bash
-apt-get install ntp
 ```
 ### Disable dhclient from overriding our NTP configuration
 If dhclient is active or has been used on this system, it may override our NTP configuration.
