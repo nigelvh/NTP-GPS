@@ -6,13 +6,6 @@ Configuration on various systems should look roughly similar, but example steps 
 - [Using NTPsec](#using-ntpsec)
 
 ## Ubuntu 22.04 LTS
-### Disable dhclient from overriding our NTP configuration
-If dhclient is active or has been used on this system, it may override our NTP configuration.
-```bash
-sed -e "s/, ntp-servers//g" -i.backup /etc/dhcp/dhclient.conf
-rm /etc/dhcp/dhclient-exit-hooks.d/ntp
-rm /run/ntp.conf.dhcp
-```
 ### Disable systemd-timesyncd
 Ubuntu uses systemd-timesyncd which is a basic SNTP daemon and does not support disciplining or acting as a server for remote clients.
 ```bash
@@ -50,10 +43,20 @@ systemctl restart gpsd
 ### Verify GPSd is recieving the NMEA data and PPS signal
 Use the utility `gpsmon` and look for NMEA sentences scrolling, as well as marks for the PPS offset every second. You might also use this opportunity to check the number of satellites being tracked.
 <img src="https://github.com/nigelvh/NTP-GPS/raw/main/Software/gpsd_screenshot.jpg" width="484" height="717">
+### Install NTPd
+```bash
+apt-get install ntp
+```
+### Disable dhclient from overriding our NTP configuration
+If dhclient is active or has been used on this system, it may override our NTP configuration.
+```bash
+sed -e "s/, ntp-servers//g" -i.backup /etc/dhcp/dhclient.conf
+rm /etc/dhcp/dhclient-exit-hooks.d/ntp
+rm /run/ntp.conf.dhcp
+```
 ### Configure NTPd
 NTPd will get the coarse time and PPS data via SHMs from GPSd. We'll need to include that in the NTPd configuration. This configuration otherwise is very close to defaults.
 ```bash
-apt-get install ntp
 curl -o /etc/ntp.conf https://raw.githubusercontent.com/nigelvh/NTP-GPS/main/Software/Files/ntpd.conf
 systemctl enable ntp
 systemctl restart ntp
