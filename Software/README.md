@@ -1,7 +1,7 @@
 # System Configuration
 Configuration on various systems should look roughly similar, but example steps are provided for the OS's below. We will be using the classic NTPd daemon as the reference, but will also discuss Chrony and NTPsec.
 
-- [Ubuntu 22.04 LTS](#ubuntu-2204-lts-and-debian-11-bullseye)
+- [Ubuntu 22.04 LTS and Debian 11 Bullseye](#ubuntu-2204-lts-and-debian-11-bullseye)
 - [Using Chrony](#using-chrony)
 - [Using NTPsec](#using-ntpsec)
 
