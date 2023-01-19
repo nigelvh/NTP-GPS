@@ -81,6 +81,32 @@ test@test:~$ ntpq -c lpeers
 ### Check that NTPd is reachable
 Use `ntpdate -d <server_ip>` or configure NTPd on another host to use your new server, and verify that it is reachable. You're done!
 
+## AlmaLinux 9.1
+Alma Linux defaults to using Chrony, so we'll use that as our example config.
+### Install Packages
+```bash
+yum install epel-release
+yum install gpsd gpsd-clients
+```
+### Configure GPSd
+GPSd will interface with the GPS module to parse the NMEA data for coarse time, and attach to the DCD signal as a PPS source. These data streams will be used to discipline the clock via NTPd's shared memory (SHM) interface.
+```bash
+curl -o /etc/sysconfig/gpsd https://raw.githubusercontent.com/nigelvh/NTP-GPS/main/Software/Files/gpsd.conf
+systemctl enable gpsd
+systemctl restart gpsd
+```
+### Verify GPSd is recieving the NMEA data and PPS signal
+Use the utility `gpsmon` and look for NMEA sentences scrolling, as well as marks for the PPS offset every second. You might also use this opportunity to check the number of satellites being tracked. Reference the screenshot from [Verify GPSd](#verify-gpsd-is-recieving-the-nmea-data-and-pps-signal) above for validating gpsmon output.
+### Configure Chrony
+Since Chrony is already installed by default, we just need to tweak the config.
+```bash
+curl -o /etc/chrony.conf https://raw.githubusercontent.com/nigelvh/NTP-GPS/main/Software/Files/chrony.conf
+systemctl enable chronyd
+systemctl restart chronyd
+```
+### Verify Chrony is tracking PPS
+Verify chrony is tracking the PPS signal from GPSd with `chronyc sources` and `chronyc tracking`. Reference the [Using Chrony](#verify-chrony-is-tracking-pps) section for more detail and example output.
+
 ## Using Chrony
 Setting up the system using Chrony will be very similar to using NTPd. Skip the configuring and verifying NTP steps above, and replace them with configuring and verifying Chrony here.
 
@@ -122,6 +148,8 @@ Root dispersion : 0.000023089 seconds
 Update interval : 16.0 seconds
 Leap status     : Normal
 ```
+### Check that NTPd is reachable
+Use `ntpdate -d <server_ip>` or configure NTPd on another host to use your new server, and verify that it is reachable. You're done!
 
 ## Using NTPsec
 NTPsec configuration will look very similar to the NTPd configuration. Skip the configuring and verifying NTP steps above, and replace them with configuring and verifying NTPsec here.
