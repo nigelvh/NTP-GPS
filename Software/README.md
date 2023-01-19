@@ -106,7 +106,7 @@ systemctl enable chronyd
 systemctl restart chronyd
 ```
 ### Verify Chrony is tracking PPS
-Verify chrony is tracking the PPS signal from GPSd with `chronyc sources` and `chronyc tracking`. Reference the [Using Chrony](#verify-chrony-is-tracking-pps) section for more detail and example output.
+Verify chrony is tracking the PPS signal from GPSd with `chronyc sources` and `chronyc tracking`. Reference the [Using Chrony](#verify-chrony-is-tracking-pps-1) section for more detail and example output.
 
 ## Using Chrony
 Setting up the system using Chrony will be very similar to using NTPd. Skip the configuring and verifying NTP steps above, and replace them with configuring and verifying Chrony here.
