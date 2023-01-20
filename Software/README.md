@@ -2,7 +2,7 @@
 Configuration on various systems should look roughly similar, but example steps are provided for the OS's below. We will be using the classic NTPd daemon as the reference, but will also discuss Chrony and NTPsec.
 
 - [Ubuntu 22.04 LTS and Debian 11 Bullseye](#ubuntu-2204-lts-and-debian-11-bullseye)
-- [AlmaLinux 9.1](#almalinux-91-and-rocky-linux-91)
+- [AlmaLinux 9.1 and Rocky Linux 9.1](#almalinux-91-and-rocky-linux-91)
 - [Using Chrony](#using-chrony)
 - [Using NTPsec](#using-ntpsec)
 
