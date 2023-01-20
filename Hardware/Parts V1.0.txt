@@ -1,0 +1,59 @@
+RS232 Driver
+	ST3232BTR
+	https://www.digikey.com/en/products/detail/stmicroelectronics/ST3232BTR/1039246
+
+FTDI UART
+	FT231XS
+	https://www.digikey.com/en/products/detail/ftdi-future-technology-devices-international-ltd/FT231XS-R/3029139
+
+DB9 Connector
+	https://www.digikey.com/en/products/detail/amphenol-cs-fci/D09S13B4GV00LF/1537562
+
+USB Connector
+	https://www.digikey.com/en/products/detail/amphenol-cs-fci/10118192-0001LF/2785387
+
+Case
+	https://www.digikey.com/en/products/detail/bud-industries/EXT-9165/5291613
+
+ESP32
+	https://www.digikey.com/en/products/detail/espressif-systems/ESP32-WROOM-32UE-N4/11613136
+
+3V3 Regulator
+	https://www.digikey.com/en/products/detail/richtek-usa-inc/RT9080-33GJ5/6161634
+
+LEDs
+	Orange: https://www.digikey.com/en/products/detail/qt-brightek-qtb/QBL7OA80D-MP4A/6556228
+	Green: https://www.digikey.com/en/products/detail/qt-brightek-qtb/QBL7YG80D-MP4A/6556230
+	Red: https://www.digikey.com/en/products/detail/qt-brightek-qtb/QBL7SA80D-MP4A/6556227
+
+SMA Connector
+	https://www.digikey.com/en/products/detail/adam-tech/RF2-49B-T-00-50-G-HDW/9831420
+
+GPS
+	https://www.digikey.com/en/products/detail/u-blox/MAX-M8C-0/6150635
+
+Reset Circuit Mosfets
+	https://www.digikey.com/en/products/detail/diodes-incorporated/DMN61D9UWQ-13/7666847
+	
+Serial Cable
+	https://www.amazon.com/StarTech-com-Black-Straight-Through-Serial/dp/B00A6GIUZA/
+
+USB Cable
+	https://www.amazon.com/Monoprice-Select-Micro-Charge-Cable/dp/B018RAW1FG/
+
+GPS Antenna (SMA-M)
+	https://www.digikey.com/en/products/detail/abracon-llc/APAMPG-130/5226441
+
+SMA Barrel (SMA-F to SMA-F)
+	https://www.digikey.com/en/products/detail/linx-technologies-inc/ADP-SMAF-SMAF/1577233
+
+LMR-240 Cables (SMA-M to SMA-M)
+	 5M - https://www.digikey.com/en/products/detail/mcgill-microwave-systems/LMR-240-SM-SM-QTY-5m/17373752
+	10M - https://www.digikey.com/en/products/detail/mcgill-microwave-systems/LMR-240-SM-SM-QTY-10m/17372956
+	15M - https://www.digikey.com/en/products/detail/mcgill-microwave-systems/LMR-240-SM-SM-QTY-15m/17374008
+	20M - https://www.digikey.com/en/products/detail/mcgill-microwave-systems/LMR-240-SM-SM-QTY-20m/17373204
+	25M - https://www.digikey.com/en/products/detail/mcgill-microwave-systems/LMR-240-SM-SM-QTY-25m/17373543
+	30M - https://www.digikey.com/en/products/detail/mcgill-microwave-systems/LMR-240-SM-SM-QTY-30m/17373414
+
+SMA Lightning Arrestor
+	https://www.amazon.com/Lightning-Arrestor-Protector-Bulkhead-Connector/dp/B07K24RTCW
