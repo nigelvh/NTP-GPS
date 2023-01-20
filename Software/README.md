@@ -2,7 +2,7 @@
 Configuration on various systems should look roughly similar, but example steps are provided for the OS's below. We will be using the classic NTPd daemon as the reference, but will also discuss Chrony and NTPsec.
 
 - [Ubuntu 22.04 LTS and Debian 11 Bullseye](#ubuntu-2204-lts-and-debian-11-bullseye)
-- [AlmaLinux 9.1](#almalinux-91)
+- [AlmaLinux 9.1](#almalinux-91-and-rocky-linux-91)
 - [Using Chrony](#using-chrony)
 - [Using NTPsec](#using-ntpsec)
 
@@ -82,7 +82,7 @@ test@test:~$ ntpq -c lpeers
 ### Check that NTPd is reachable
 Use `ntpdate -d <server_ip>` or configure NTPd on another host to use your new server, and verify that it is reachable. You're done!
 
-## AlmaLinux 9.1
+## AlmaLinux 9.1 and Rocky Linux 9.1
 Alma Linux defaults to using Chrony, so we'll use that as our example config.
 ### Install Packages
 ```bash
