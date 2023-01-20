@@ -1,6 +1,8 @@
 # System Configuration
 Configuration on various systems should look roughly similar, but example steps are provided for the OS's below. We will be using the classic NTPd daemon as the reference, but will also discuss Chrony and NTPsec.
 
+These instructions assume that you have a GPS device that outputs NMEA data, as well as the PPS (Pulse Per Second) signal on the DCD pin of the hardware serial port `/dev/ttyS0`. If your device is on a different port, substitute that port into the configurations. If your device does not output the PPS signal, these instructions are not applicable.
+
 - [Ubuntu 22.04 LTS and Debian 11 Bullseye](#ubuntu-2204-lts-and-debian-11-bullseye)
 - [AlmaLinux 9.1 and Rocky Linux 9.1](#almalinux-91-and-rocky-linux-91)
 - [Using Chrony](#using-chrony)
